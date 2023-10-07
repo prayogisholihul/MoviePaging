@@ -1,4 +1,4 @@
-package com.zogik.feature.presentation.theme
+package com.zogik.feature.presentation.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

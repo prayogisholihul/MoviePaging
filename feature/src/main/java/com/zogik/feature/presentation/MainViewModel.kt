@@ -1,5 +1,6 @@
 package com.zogik.feature.presentation
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -15,4 +16,13 @@ class MainViewModel @Inject constructor(private val useCase: UseCase) : ViewMode
 
     fun getNowPlaying(): Flow<PagingData<NowPlayingItem>> =
         useCase.getNowPlaying().cachedIn(viewModelScope)
+
+    var query = mutableStateOf("")
+        private set
+
+    fun setQuery(query: String) {
+        this.query.value = query
+    }
+
+    fun searchMovie() = useCase.searchMovie(query.value).cachedIn(viewModelScope)
 }

@@ -1,20 +1,33 @@
 package com.zogik.feature.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FabPosition
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,11 +38,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import com.zogik.feature.presentation.theme.MovieTheme
+import com.zogik.feature.presentation.ui.theme.MovieTheme
+import com.zogik.feature.presentation.ui.theme.Purple80
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -39,7 +54,32 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    Greeting()
+                    Scaffold(
+                        topBar = {
+                            TopAppBar(
+                                colors = TopAppBarDefaults.largeTopAppBarColors(Purple80),
+                                title = { Text("Home") },
+                                navigationIcon = { },
+                                actions = {},
+                            )
+                        },
+                        floatingActionButtonPosition = FabPosition.End,
+                        floatingActionButton = {
+                            ExtendedFloatingActionButton(
+                                onClick = {
+                                    startActivity(Intent(this, SearchActivity::class.java))
+                                },
+                            ) {
+                                Icon(Icons.Filled.Search, contentDescription = "Search")
+                            }
+                        },
+                        content = { innerPadding ->
+                            HomeScreen(
+                                modifier = Modifier.consumeWindowInsets(innerPadding),
+                                innerPadding,
+                            )
+                        },
+                    )
                 }
             }
         }
@@ -47,11 +87,11 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting() {
+fun HomeScreen(modifier: Modifier, padding: PaddingValues) {
     val viewModel = hiltViewModel<MainViewModel>()
     val itemList = viewModel.getNowPlaying().collectAsLazyPagingItems()
 
-    LazyColumn {
+    LazyColumn(modifier, contentPadding = padding) {
         items(
             items = itemList,
             key = { it.id ?: 0 },
@@ -122,7 +162,5 @@ fun Greeting() {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    MovieTheme {
-//        Greeting()
-    }
+    MovieTheme {}
 }

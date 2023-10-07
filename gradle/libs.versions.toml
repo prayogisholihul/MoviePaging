@@ -21,6 +21,7 @@ paging = "3.1.1"
 paging-compose = "1.0.0-alpha17"
 lifecycle_version = "2.6.1"
 hilt_navigation = "1.0.0"
+compose_material = "1.2.0-alpha02"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -56,6 +57,7 @@ viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref
 livedata = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle_version" }
 viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle_version" }
 hilt-navigation = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt_navigation" }
+compose-material = {module = "androidx.compose.material3:material3", version.ref = "compose_material"}
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }
