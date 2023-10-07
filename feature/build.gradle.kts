@@ -50,8 +50,8 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:data"))
-    implementation(project(":core:domain"))
+    implementation(project(":core:response"))
+    implementation(project(":core:entity"))
     implementation(project(":core:source"))
 
     // hilt

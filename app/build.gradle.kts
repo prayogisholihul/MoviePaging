@@ -54,8 +54,8 @@ android {
 
 dependencies {
     api(project(":core:source"))
-    api(project(":core:data"))
-    api(project(":core:domain"))
+    api(project(":core:response"))
+    api(project(":core:entity"))
     implementation(project(":feature"))
 
     // hilt

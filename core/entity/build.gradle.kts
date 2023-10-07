@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.zogik.data"
+    namespace = "com.zogik.entity"
     compileSdk = 34
 
     defaultConfig {
@@ -20,7 +20,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
+                "proguard-rules.pro"
             )
         }
     }
@@ -35,7 +35,6 @@ android {
 
 dependencies {
 
-    implementation(libs.gson)
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
