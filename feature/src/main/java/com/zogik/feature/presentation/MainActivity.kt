@@ -111,10 +111,7 @@ fun HomeScreen(modifier: Modifier, padding: PaddingValues, onlick: (String) -> U
     val itemList = viewModel.getNowPlaying().collectAsLazyPagingItems()
 
     LazyColumn(modifier, contentPadding = padding) {
-        items(
-            items = itemList,
-            key = { it.id ?: 0 },
-        ) { item ->
+        items(items = itemList) { item ->
             Text(
                 modifier = Modifier
                     .height(75.dp).fillMaxWidth().clickable {
