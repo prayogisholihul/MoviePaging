@@ -1,8 +1,10 @@
 package com.zogik.feature.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -60,7 +62,11 @@ class SearchActivity : ComponentActivity() {
                             SearchScreen(
                                 modifier = Modifier.consumeWindowInsets(innerPadding)
                                     .padding(innerPadding),
-                            )
+                            ) {
+                                val intent = Intent(this, DetailMovieActivity::class.java)
+                                intent.putExtra(DetailMovieActivity.MOVIE_ID, it)
+                                startActivity(intent)
+                            }
                         },
                     )
                 }
@@ -70,7 +76,7 @@ class SearchActivity : ComponentActivity() {
 }
 
 @Composable
-fun SearchScreen(modifier: Modifier = Modifier) {
+fun SearchScreen(modifier: Modifier = Modifier, onlick: (String) -> Unit) {
     val viewModel = hiltViewModel<MainViewModel>()
     val searchList = viewModel.searchMovie().collectAsLazyPagingItems()
 
@@ -84,7 +90,9 @@ fun SearchScreen(modifier: Modifier = Modifier) {
             ) { item ->
                 Text(
                     modifier = Modifier
-                        .height(75.dp),
+                        .height(75.dp).fillMaxWidth().clickable {
+                            onlick.invoke(item?.id.toString())
+                        },
                     color = Color.Black,
                     text = item?.title.orEmpty(),
                 )

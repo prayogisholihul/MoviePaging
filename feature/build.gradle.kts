@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.zogik.feature"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 24
@@ -70,6 +70,7 @@ dependencies {
     implementation(libs.viewmodel.compose)
 
     implementation(libs.retrofit)
+    implementation(libs.glide)
     implementation(libs.appcompat)
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)

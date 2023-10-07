@@ -70,7 +70,7 @@ object NetworkModule {
         gson: GsonConverterFactory,
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_URL)
+            .baseUrl(Constant.baseUrl)
             .addConverterFactory(gson)
             .client(client)
             .build()

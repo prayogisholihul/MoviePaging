@@ -7,7 +7,7 @@ plugins {
 }
 android {
     namespace = "com.zogik.network"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 24
@@ -27,6 +27,11 @@ android {
             "String",
             "BASE_URL",
             "\"https://api.themoviedb.org/3/\"",
+        )
+        buildConfigField(
+            "String",
+            "IMAGE_URL",
+            "\"https://image.tmdb.org/t/p/original/\"",
         )
     }
 

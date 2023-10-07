@@ -1,8 +1,11 @@
 package com.zogik.feature.data
 
+import com.zogik.data.MovieDetail
 import com.zogik.data.NowPlaying
 import com.zogik.data.SearchMovie
+import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiClient {
@@ -11,4 +14,7 @@ interface ApiClient {
 
     @GET("search/movie")
     suspend fun searchMovie(@Query("query") search: String, @Query("page") page: Int): SearchMovie
+
+    @GET("movie/{movie_id}")
+    suspend fun movieDetail(@Path("movie_id") id: String): Response<MovieDetail>
 }

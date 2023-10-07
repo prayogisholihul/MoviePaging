@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -77,7 +78,11 @@ class MainActivity : ComponentActivity() {
                             HomeScreen(
                                 modifier = Modifier.consumeWindowInsets(innerPadding),
                                 innerPadding,
-                            )
+                            ) {
+                                val intent = Intent(this, DetailMovieActivity::class.java)
+                                intent.putExtra(DetailMovieActivity.MOVIE_ID, it)
+                                startActivity(intent)
+                            }
                         },
                     )
                 }
@@ -87,7 +92,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun HomeScreen(modifier: Modifier, padding: PaddingValues) {
+fun HomeScreen(modifier: Modifier, padding: PaddingValues, onlick: (String) -> Unit) {
     val viewModel = hiltViewModel<MainViewModel>()
     val itemList = viewModel.getNowPlaying().collectAsLazyPagingItems()
 
@@ -98,7 +103,9 @@ fun HomeScreen(modifier: Modifier, padding: PaddingValues) {
         ) { item ->
             Text(
                 modifier = Modifier
-                    .height(75.dp),
+                    .height(75.dp).fillMaxWidth().clickable {
+                        onlick.invoke(item?.id.toString())
+                    },
                 color = Color.Black,
                 text = item?.title.orEmpty(),
             )
