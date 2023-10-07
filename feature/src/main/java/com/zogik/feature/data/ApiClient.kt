@@ -1,8 +1,8 @@
 package com.zogik.feature.data
 
-import com.zogik.data.MovieDetail
-import com.zogik.data.NowPlaying
-import com.zogik.data.SearchMovie
+import com.zogik.response.MovieDetail
+import com.zogik.response.NowPlaying
+import com.zogik.response.SearchMovie
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

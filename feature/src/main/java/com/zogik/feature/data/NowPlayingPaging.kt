@@ -3,7 +3,7 @@ package com.zogik.feature.data
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.zogik.data.NowPlayingItem
+import com.zogik.response.NowPlayingItem
 
 class NowPlayingPaging(private val api: ApiClient) : PagingSource<Int, NowPlayingItem>() {
     override fun getRefreshKey(state: PagingState<Int, NowPlayingItem>): Int? {

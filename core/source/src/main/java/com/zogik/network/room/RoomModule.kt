@@ -1,4 +1,4 @@
-package com.zogik.network
+package com.zogik.network.room
 
 import android.content.Context
 import androidx.room.Room

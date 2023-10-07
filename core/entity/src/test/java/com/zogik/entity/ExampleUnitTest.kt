@@ -1,4 +1,4 @@
-package com.zogik.data
+package com.zogik.entity
 
 import org.junit.Test
 

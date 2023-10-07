@@ -1,8 +1,11 @@
-package com.zogik.data
+package com.zogik.response
 
 import com.google.gson.annotations.SerializedName
 
-data class SearchMovie(
+data class NowPlaying(
+
+    @field:SerializedName("dates")
+    val dates: Dates? = null,
 
     @field:SerializedName("page")
     val page: Int? = null,
@@ -11,13 +14,22 @@ data class SearchMovie(
     val totalPages: Int? = null,
 
     @field:SerializedName("results")
-    val results: List<SearchItem> = arrayListOf(),
+    val results: List<NowPlayingItem> = arrayListOf(),
 
     @field:SerializedName("total_results")
     val totalResults: Int? = null,
 )
 
-data class SearchItem(
+data class Dates(
+
+    @field:SerializedName("maximum")
+    val maximum: String? = null,
+
+    @field:SerializedName("minimum")
+    val minimum: String? = null,
+)
+
+data class NowPlayingItem(
 
     @field:SerializedName("overview")
     val overview: String? = null,
@@ -47,7 +59,7 @@ data class SearchItem(
     val releaseDate: String? = null,
 
     @field:SerializedName("popularity")
-    val popularity: Double? = null,
+    val popularity: Any? = null,
 
     @field:SerializedName("vote_average")
     val voteAverage: Double? = null,

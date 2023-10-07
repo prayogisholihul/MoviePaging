@@ -3,6 +3,11 @@
 
     <application>
         <activity
+            android:name=".presentation.FavoriteActivity"
+            android:exported="false"
+            android:label="@string/title_activity_favorite"
+            android:theme="@style/Theme.Movie" />
+        <activity
             android:name=".presentation.DetailMovieActivity"
             android:exported="false"
             android:label="@string/title_activity_detail_movie"

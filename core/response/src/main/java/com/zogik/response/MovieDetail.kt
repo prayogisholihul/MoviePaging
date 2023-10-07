@@ -1,4 +1,4 @@
-package com.zogik.data
+package com.zogik.response
 
 import com.google.gson.annotations.SerializedName
 

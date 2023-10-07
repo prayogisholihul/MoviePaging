@@ -3,16 +3,21 @@ package com.zogik.feature.data
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.zogik.data.MovieDetail
-import com.zogik.data.NowPlayingItem
-import com.zogik.data.SearchItem
+import com.zogik.entity.MovieFavorite
 import com.zogik.feature.domain.Repository
 import com.zogik.network.BaseCall
 import com.zogik.network.Result
+import com.zogik.network.room.DatabaseApp
+import com.zogik.response.MovieDetail
+import com.zogik.response.NowPlayingItem
+import com.zogik.response.SearchItem
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class RepositoryImpl @Inject constructor(private val api: ApiClient) : Repository, BaseCall() {
+class RepositoryImpl @Inject constructor(
+    private val api: ApiClient,
+    private val local: DatabaseApp,
+) : Repository, BaseCall() {
     override fun getNowPlaying(): Flow<PagingData<NowPlayingItem>> {
         return Pager(
             config = PagingConfig(
@@ -39,6 +44,11 @@ class RepositoryImpl @Inject constructor(private val api: ApiClient) : Repositor
         return response {
             api.movieDetail(id)
         }
+    }
+
+    override fun getFavorite(): List<MovieFavorite> = local.favoriteDao().getFavorite()
+    override fun setFavorite(movieFavorite: MovieFavorite) {
+        local.favoriteDao().setFavorite(movieFavorite)
     }
 
     companion object {

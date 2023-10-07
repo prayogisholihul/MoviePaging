@@ -59,9 +59,16 @@ dependencies {
     implementation(libs.hilt.compose)
     implementation(libs.hilt.navigation)
     implementation(platform(libs.compose.bom))
+    implementation(platform(libs.compose.bom))
+    androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(platform(libs.compose.bom))
     kapt(libs.hilt.kapt)
     implementation(libs.hilt.android.gradle.plugin)
+
+    // room
+    implementation(libs.room)
+    implementation(libs.room.ktx)
+    kapt(libs.room.compiler)
 
     implementation(libs.paging3)
     implementation(libs.paging.compose)

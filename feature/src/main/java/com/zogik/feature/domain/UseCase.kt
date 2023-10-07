@@ -1,9 +1,10 @@
 package com.zogik.feature.domain
 
 import androidx.paging.PagingData
-import com.zogik.data.MovieDetail
-import com.zogik.data.NowPlayingItem
-import com.zogik.data.SearchItem
+import com.zogik.entity.MovieFavorite
+import com.zogik.response.MovieDetail
+import com.zogik.response.NowPlayingItem
+import com.zogik.response.SearchItem
 import com.zogik.network.Result
 import kotlinx.coroutines.flow.Flow
 
@@ -12,4 +13,6 @@ interface UseCase {
     fun searchMovie(query: String): Flow<PagingData<SearchItem>>
 
     suspend fun movieDetail(id: String): Flow<Result<MovieDetail>>
+    fun getFavorite(): List<MovieFavorite>
+    fun setFavorite(movieFavorite: MovieFavorite)
 }

@@ -40,7 +40,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideSubcomposition
 import com.bumptech.glide.integration.compose.RequestState
-import com.zogik.data.MovieDetail
+import com.zogik.response.MovieDetail
 import com.zogik.feature.presentation.ui.theme.MovieTheme
 import com.zogik.feature.presentation.ui.theme.Purple80
 import com.zogik.network.Constant

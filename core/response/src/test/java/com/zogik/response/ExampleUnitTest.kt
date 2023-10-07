@@ -1,4 +1,4 @@
-package com.zogik.domain
+package com.zogik.response
 
 import org.junit.Test
 

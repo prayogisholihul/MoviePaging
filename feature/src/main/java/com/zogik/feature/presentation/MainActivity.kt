@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
@@ -61,7 +62,20 @@ class MainActivity : ComponentActivity() {
                                 colors = TopAppBarDefaults.largeTopAppBarColors(Purple80),
                                 title = { Text("Home") },
                                 navigationIcon = { },
-                                actions = {},
+                                actions = {
+                                    Icon(
+                                        Icons.Filled.Favorite,
+                                        contentDescription = "Favorite",
+                                        modifier = Modifier.clickable {
+                                            startActivity(
+                                                Intent(
+                                                    this@MainActivity,
+                                                    FavoriteActivity::class.java,
+                                                ),
+                                            )
+                                        },
+                                    )
+                                },
                             )
                         },
                         floatingActionButtonPosition = FabPosition.End,
