@@ -86,7 +86,7 @@ fun SearchScreen(modifier: Modifier = Modifier, onlick: (String) -> Unit) {
         LazyColumn(modifier) {
             items(
                 items = searchList,
-                key = { it.id ?: 999 },
+                key = { it.id ?: 0 },
             ) { item ->
                 Text(
                     modifier = Modifier
@@ -101,7 +101,6 @@ fun SearchScreen(modifier: Modifier = Modifier, onlick: (String) -> Unit) {
 
             when (val state = searchList.loadState.refresh) { // FIRST LOAD
                 is LoadState.Error -> {
-                    // TODO Error Item
                     // state.error to get error message
                 }
 
@@ -129,7 +128,6 @@ fun SearchScreen(modifier: Modifier = Modifier, onlick: (String) -> Unit) {
 
             when (val state = searchList.loadState.append) { // Pagination
                 is LoadState.Error -> {
-                    // TODO Pagination Error Item
                     // state.error to get error message
                 }
 

@@ -1,5 +1,6 @@
 package com.zogik.feature.presentation
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,9 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(private val useCase: UseCase) : ViewModel() {
 
-    init {
-        useCase.setFavorite(MovieFavorite(968051, "The Nun II"))
-    }
+    val favoriteDataPass: MutableState<MovieFavorite?> = mutableStateOf(null)
 
     fun getNowPlaying(): Flow<PagingData<NowPlayingItem>> =
         useCase.getNowPlaying().cachedIn(viewModelScope)
@@ -48,5 +47,15 @@ class MainViewModel @Inject constructor(private val useCase: UseCase) : ViewMode
         }
     }
 
-    fun getFavorite() = useCase.getFavorite()
+    private val _listFavorite: MutableStateFlow<List<MovieFavorite>> = MutableStateFlow(listOf())
+    val listFavorite = _listFavorite.asStateFlow()
+    fun getFavorite() = viewModelScope.launch {
+        useCase.getFavorite().collectLatest {
+            _listFavorite.value = it
+        }
+    }
+
+    fun getFavoriteById(id: Int) = useCase.getFavoriteById(id)
+    fun setFavorite(movieFavorite: MovieFavorite) = useCase.setFavorite(movieFavorite)
+    fun deleteFavorite(movieFavorite: MovieFavorite) = useCase.deleteFavorite(movieFavorite)
 }

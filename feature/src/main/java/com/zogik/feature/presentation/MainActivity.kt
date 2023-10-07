@@ -128,7 +128,6 @@ fun HomeScreen(modifier: Modifier, padding: PaddingValues, onlick: (String) -> U
 
         when (val state = itemList.loadState.refresh) { // FIRST LOAD
             is LoadState.Error -> {
-                // TODO Error Item
                 // state.error to get error message
             }
 
@@ -156,7 +155,6 @@ fun HomeScreen(modifier: Modifier, padding: PaddingValues, onlick: (String) -> U
 
         when (val state = itemList.loadState.append) { // Pagination
             is LoadState.Error -> {
-                // TODO Pagination Error Item
                 // state.error to get error message
             }
 

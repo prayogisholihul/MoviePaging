@@ -46,10 +46,14 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getFavorite(): List<MovieFavorite> = local.favoriteDao().getFavorite()
+    override suspend fun getFavorite(): Flow<List<MovieFavorite>> = local.favoriteDao().getFavorite()
     override fun setFavorite(movieFavorite: MovieFavorite) {
         local.favoriteDao().setFavorite(movieFavorite)
     }
+
+    override fun getFavoriteById(id: Int): MovieFavorite = local.favoriteDao().getFavoriteById(id)
+    override fun deleteFavorite(movieFavorite: MovieFavorite) =
+        local.favoriteDao().deleteFavorite(movieFavorite)
 
     companion object {
         private const val PAGE_SIZE = 10
