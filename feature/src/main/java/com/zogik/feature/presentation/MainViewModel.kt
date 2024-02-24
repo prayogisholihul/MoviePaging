@@ -38,7 +38,7 @@ class MainViewModel @Inject constructor(private val useCase: UseCase) : ViewMode
     fun searchMovie() = useCase.searchMovie(query.value).cachedIn(viewModelScope)
 
     private val _getDetail: MutableStateFlow<Result<MovieDetail>> =
-        MutableStateFlow(Result.Loading(true))
+        MutableStateFlow(Result.Loading)
     val getDetail = _getDetail.asStateFlow()
     fun getDetail(id: String) = viewModelScope.launch {
         useCase.movieDetail(id).collectLatest {

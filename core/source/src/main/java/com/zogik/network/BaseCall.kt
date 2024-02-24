@@ -1,11 +1,11 @@
 package com.zogik.network
 
-import com.google.gson.JsonParser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
+import org.json.JSONObject
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
@@ -16,9 +16,9 @@ abstract class BaseCall {
         return withContext(Dispatchers.IO) {
             flow {
                 try {
-                    emit(Result.Loading(true))
+                    emit(Result.Loading)
                     val response: Response<ResultType> = api()
-                    emit(Result.Loading(false))
+                    emit(Result.Idle)
                     if (response.isSuccessful) {
                         response.body()?.let {
                             emit(Result.Success(data = it))
@@ -40,7 +40,8 @@ abstract class BaseCall {
 
     private fun parserErrorBody(response: ResponseBody?): String {
         return response?.let {
-            val errorMessage = JsonParser().parse(it.string()).asJsonObject["message"].asString
+            val json = JSONObject(it.string())
+            val errorMessage = json.getString("message")
             errorMessage.ifEmpty { "Whoops! Something went wrong" }
             errorMessage
         } ?: "Unknown error occur, please try again"
@@ -51,9 +52,9 @@ abstract class BaseCall {
             is SocketTimeoutException -> "Whoops! connection time out, try again!"
             is IOException -> "No internet connection, try again!"
             is HttpException -> try {
-                val errorJsonString = throwable.response()?.errorBody()?.string()
-                val errorMessage =
-                    JsonParser().parse(errorJsonString).asJsonObject["message"].asString
+                val errorJsonString = throwable.response()?.errorBody()?.string().orEmpty()
+                val json = JSONObject(errorJsonString)
+                val errorMessage = json.getString("message")
                 errorMessage.ifEmpty { "Whoops! Something went wrong" }
             } catch (e: Exception) {
                 "Unknown error occur, please try again!"

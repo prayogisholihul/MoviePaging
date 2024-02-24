@@ -2,10 +2,10 @@ package com.zogik.feature.domain
 
 import androidx.paging.PagingData
 import com.zogik.entity.MovieFavorite
+import com.zogik.network.Result
 import com.zogik.response.MovieDetail
 import com.zogik.response.NowPlayingItem
 import com.zogik.response.SearchItem
-import com.zogik.network.Result
 import kotlinx.coroutines.flow.Flow
 
 interface UseCase {
