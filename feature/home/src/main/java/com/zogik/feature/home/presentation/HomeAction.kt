@@ -10,4 +10,5 @@ import android.content.Context
 interface HomeAction {
     fun navigateToSearch(context: Context)
     fun navigateToFavorite(context: Context)
+    fun navigateToDetail(context: Context, movieId: String, movieName: String)
 }

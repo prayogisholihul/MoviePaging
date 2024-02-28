@@ -8,5 +8,5 @@ package com.zogik.model.genre
 data class Genre(
     val name: String,
     val id: Int,
-    var isSelected: Boolean = false
+    var isSelected: Boolean = false,
 )

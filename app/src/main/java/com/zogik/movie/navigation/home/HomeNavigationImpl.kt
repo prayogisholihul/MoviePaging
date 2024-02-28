@@ -2,6 +2,7 @@ package com.zogik.movie.navigation.home
 
 import android.content.Context
 import android.content.Intent
+import com.zogik.feature.detailmovie.presentation.DetailMovieActivity
 import com.zogik.feature.favorite.presentation.FavoriteActivity
 import com.zogik.feature.home.presentation.HomeAction
 import com.zogik.feature.search.presentation.SearchActivity
@@ -21,6 +22,13 @@ class HomeNavigationImpl @Inject constructor() : HomeAction {
 
     override fun navigateToFavorite(context: Context) {
         val intent = Intent(context, FavoriteActivity::class.java)
+        context.startActivity(intent)
+    }
+
+    override fun navigateToDetail(context: Context, movieId: String, movieName: String) {
+        val intent = Intent(context, DetailMovieActivity::class.java)
+        intent.putExtra(DetailMovieActivity.MOVIE_ID, movieId)
+        intent.putExtra(DetailMovieActivity.MOVIE_NAME, movieName)
         context.startActivity(intent)
     }
 }

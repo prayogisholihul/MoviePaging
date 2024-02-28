@@ -23,7 +23,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
@@ -76,13 +75,13 @@ class HomeActivity : ComponentActivity() {
                                 title = { Text("Home") },
                                 navigationIcon = { },
                                 actions = {
-                                    Icon(
-                                        Icons.Filled.Favorite,
-                                        contentDescription = "Favorite",
-                                        modifier = Modifier.clickable {
-                                            navigation.navigateToFavorite(this@HomeActivity)
-                                        },
-                                    )
+//                                    Icon(
+//                                        Icons.Filled.Favorite,
+//                                        contentDescription = "Favorite",
+//                                        modifier = Modifier.clickable {
+//                                            navigation.navigateToFavorite(this@HomeActivity)
+//                                        },
+//                                    )
                                 },
                             )
                         },
@@ -100,10 +99,8 @@ class HomeActivity : ComponentActivity() {
                             HomeScreen(
                                 modifier = Modifier.consumeWindowInsets(innerPadding),
                                 innerPadding,
-                            ) {
-//                                val intent = Intent(this, DetailMovieActivity::class.java)
-//                                intent.putExtra(DetailMovieActivity.MOVIE_ID, it)
-//                                startActivity(intent)
+                            ) { id, name ->
+                                navigation.navigateToDetail(this, id, name)
                             }
                         },
                     )
@@ -114,7 +111,7 @@ class HomeActivity : ComponentActivity() {
 }
 
 @Composable
-fun HomeScreen(modifier: Modifier, padding: PaddingValues, onlick: (String) -> Unit) {
+fun HomeScreen(modifier: Modifier, padding: PaddingValues, onlick: (String, String) -> Unit) {
     val viewModel = hiltViewModel<HomeViewModel>()
     val itemList = viewModel.getMovieList().collectAsLazyPagingItems()
     val genreList = viewModel.genreList.collectAsState(Result.Loading).value
@@ -161,7 +158,7 @@ fun HomeScreen(modifier: Modifier, padding: PaddingValues, onlick: (String) -> U
                 Text(
                     modifier = Modifier
                         .height(75.dp).fillMaxWidth().clickable {
-                            onlick.invoke(item?.id.toString())
+                            onlick.invoke(item?.id.toString(), item?.title.orEmpty())
                         },
                     color = Color.Black,
                     text = item?.title.orEmpty(),

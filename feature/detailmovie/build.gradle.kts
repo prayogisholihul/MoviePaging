@@ -2,6 +2,8 @@
 plugins {
     alias(libs.plugins.com.android.library)
     alias(libs.plugins.org.jetbrains.kotlin.android)
+    alias(libs.plugins.hilt.plugin)
+    kotlin("kapt")
 }
 
 android {
@@ -25,20 +27,69 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
+    }
+    buildFeatures {
+        compose = true
+    }
+
+    viewBinding {
+        enable = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.3"
+    }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
     }
 }
 
 dependencies {
 
-    implementation(libs.core.ktx)
+    implementation(project(":core:model"))
+    implementation(project(":core:source"))
+    implementation(project(":core:designsystem"))
+
+    // hilt
+    implementation(libs.hilt)
+    implementation(libs.hilt.compose)
+    implementation(libs.hilt.navigation)
+    implementation(platform(libs.compose.bom))
+    kapt(libs.hilt.kapt)
+    implementation(libs.hilt.android.gradle.plugin)
+
+    implementation(libs.paging3)
+    implementation(libs.paging.compose)
+    implementation(libs.viewmodel)
+    implementation(libs.livedata)
+    implementation(libs.viewmodel.compose)
+    implementation(libs.androidx.viewbinding)
+    implementation(libs.compose.viewbinding)
+    implementation(libs.youtubeview)
+
+    implementation(libs.retrofit)
     implementation(libs.appcompat)
-    implementation(libs.material)
+    implementation(libs.core.ktx)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.activity.compose)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.ui)
+    implementation(libs.compose.material)
+    implementation(libs.ui.graphics)
+    implementation(libs.ui.tooling.preview)
+    implementation(libs.material3)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.ui.test.junit4)
+    debugImplementation(libs.ui.tooling)
+    debugImplementation(libs.ui.test.manifest)
 }

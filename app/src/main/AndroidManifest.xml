@@ -32,6 +32,7 @@
 
         <activity android:name="com.zogik.feature.search.presentation.SearchActivity" />
         <activity android:name="com.zogik.feature.favorite.presentation.FavoriteActivity" />
+        <activity android:name="com.zogik.feature.detailmovie.presentation.DetailMovieActivity" />
     </application>
 
 </manifest>

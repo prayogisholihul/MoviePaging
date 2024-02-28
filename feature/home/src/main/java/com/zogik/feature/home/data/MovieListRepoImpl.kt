@@ -39,6 +39,8 @@ class MovieListRepoImpl @Inject constructor(private val dataSource: MovieListSou
     override suspend fun getGenreList(): Flow<Result<List<Genre>>> {
         return dataSource.getGenreList().map { result ->
             when (result) {
+                Result.Idle -> Result.Idle
+                Result.Loading -> Result.Loading
                 is Result.Success -> {
                     val genreList = (result.data.genres ?: arrayListOf()).map { response ->
                         GenreMapper.toDomain(response)
@@ -47,8 +49,6 @@ class MovieListRepoImpl @Inject constructor(private val dataSource: MovieListSou
                 }
 
                 is Result.Error -> Result.Error(result.message, result.code)
-                is Result.Idle -> Result.Idle
-                is Result.Loading -> Result.Loading
             }
         }
     }

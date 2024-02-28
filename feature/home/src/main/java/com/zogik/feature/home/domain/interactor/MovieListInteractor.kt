@@ -23,6 +23,8 @@ class MovieListInteractor @Inject constructor(private val repo: MovieListRepo) :
     override suspend fun getGenreList(): Flow<Result<List<Genre>>> {
         return repo.getGenreList().map { result ->
             when (result) {
+                Result.Idle -> Result.Idle
+                Result.Loading -> Result.Loading
                 is Result.Success -> {
                     val genreList = result.data
                     val genreAll = arrayListOf<Genre>()
@@ -32,8 +34,6 @@ class MovieListInteractor @Inject constructor(private val repo: MovieListRepo) :
                 }
 
                 is Result.Error -> Result.Error(result.message, result.code)
-                is Result.Idle -> Result.Idle
-                is Result.Loading -> Result.Loading
             }
         }
     }

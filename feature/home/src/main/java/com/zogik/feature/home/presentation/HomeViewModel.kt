@@ -52,9 +52,6 @@ class HomeViewModel @Inject constructor(private val movieListUseCase: MovieListU
         return movieListUseCase.getMovieList(genreId).cachedIn(viewModelScope)
     }
 
-    private val _getDetail: MutableStateFlow<Result<MovieDetail>> =
-        MutableStateFlow(Result.Loading)
-    val getDetail = _getDetail.asStateFlow()
     fun getDetail(id: String) = viewModelScope.launch {
 //        useCase.movieDetail(id).collectLatest {
 //            delay(500)
