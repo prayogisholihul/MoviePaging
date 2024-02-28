@@ -1,0 +1,9 @@
+R_DEF: Internal format may change without notice
+local
+id youtube_player_view
+layout youtube_view
+string app_name
+string title_activity_detail_movie
+string title_activity_favorite
+string title_activity_search
+style Theme.Movie

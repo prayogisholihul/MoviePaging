@@ -1,6 +1,0 @@
-<resources>
-    <string name="app_name">Movie</string>
-    <string name="title_activity_search">SearchActivity</string>
-    <string name="title_activity_detail_movie">DetailMovieActivity</string>
-    <string name="title_activity_favorite">FavoriteActivity</string>
-</resources>

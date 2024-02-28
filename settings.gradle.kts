@@ -16,6 +16,9 @@ dependencyResolutionManagement {
 rootProject.name = "Movie"
 include(":app")
 include(":core:source")
-include(":core:response")
-include(":core:entity")
-include(":feature")
+include(":core:model")
+include(":core:designsystem")
+include(":feature:home")
+include(":feature:favorite")
+include(":feature:detailmovie")
+include(":feature:search")
