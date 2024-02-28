@@ -55,7 +55,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:entity"))
+    implementation(project(":core:model"))
 
     // hilt
     implementation(libs.hilt)

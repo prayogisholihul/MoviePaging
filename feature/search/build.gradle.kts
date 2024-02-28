@@ -50,7 +50,6 @@ android {
 dependencies {
 
     implementation(project(":core:model"))
-    implementation(project(":core:entity"))
     implementation(project(":core:source"))
     implementation(project(":core:designsystem"))
 
