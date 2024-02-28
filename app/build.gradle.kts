@@ -55,8 +55,10 @@ android {
 dependencies {
     api(project(":core:source"))
     api(project(":core:model"))
-    api(project(":core:entity"))
-    implementation(project(":feature"))
+    implementation(project(":feature:home"))
+    implementation(project(":feature:search"))
+    implementation(project(":feature:favorite"))
+    implementation(project(":feature:detailmovie"))
 
     // hilt
     implementation(libs.hilt)

@@ -1,0 +1,8 @@
+com.zogik.feature
+id youtube_player_view
+layout youtube_view
+string app_name
+string title_activity_detail_movie
+string title_activity_favorite
+string title_activity_search
+style Theme_Movie

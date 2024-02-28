@@ -2,10 +2,10 @@ package com.zogik.network.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.zogik.entity.MovieFavorite
+import com.zogik.model.MovieFavorite
 
 @Database(
-    entities = [MovieFavorite::class],
+    entities = [com.zogik.model.MovieFavorite::class],
     version = 1,
     exportSchema = false,
 )
