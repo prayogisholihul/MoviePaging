@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zogik.feature.favorite.domain.usecase.FavoriteUseCase
 import com.zogik.model.favorite.MovieFavorite
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -15,6 +16,7 @@ import javax.inject.Inject
  * Mailto : prayogisholihul@gmail.com
  * Created at : Wednesday 28/02/2024: 13:27
  **/
+@HiltViewModel
 class FavoriteViewModel @Inject constructor(private val useCase: FavoriteUseCase) : ViewModel() {
     private val _listFavorite: MutableStateFlow<List<MovieFavorite>> = MutableStateFlow(listOf())
     val listFavorite = _listFavorite.asStateFlow()

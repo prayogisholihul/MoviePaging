@@ -5,13 +5,14 @@ import com.zogik.model.favorite.MovieFavorite
 import com.zogik.model.favorite.MovieFavoriteMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 /**
  * Created by : Prayogi Sholihul
  * Mailto : prayogisholihul@gmail.com
  * Created at : Wednesday 28/02/2024: 12:59
  **/
-class FavoriteRepoImpl constructor(private val datasource: FavoriteSource) : FavoriteRepo {
+class FavoriteRepoImpl @Inject constructor(private val datasource: FavoriteSource) : FavoriteRepo {
     override suspend fun getFavorite(): Flow<List<MovieFavorite>> =
         datasource.getFavorite().map { list -> list.map { MovieFavoriteMapper.toDomain(it) } }
 

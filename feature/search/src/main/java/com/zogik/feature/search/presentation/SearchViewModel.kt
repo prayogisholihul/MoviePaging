@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.zogik.feature.search.domain.usecase.SearchMovieUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 /**
@@ -12,6 +13,7 @@ import javax.inject.Inject
  * Mailto : prayogisholihul@gmail.com
  * Created at : Wednesday 28/02/2024: 12:54
  **/
+@HiltViewModel
 class SearchViewModel @Inject constructor(private val useCase: SearchMovieUseCase) : ViewModel() {
     var query = mutableStateOf("")
         private set

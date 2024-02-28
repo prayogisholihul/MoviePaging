@@ -4,10 +4,13 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.zogik.model.movielist.MovieListItem
 import com.zogik.feature.home.data.source.MovieListSource
 import com.zogik.feature.home.domain.repository.MovieListRepo
+import com.zogik.model.genre.Genre
+import com.zogik.model.genre.GenreMapper
+import com.zogik.model.movielist.MovieListItem
 import com.zogik.model.movielist.MovieListMapper
+import com.zogik.network.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -32,4 +35,21 @@ class MovieListRepoImpl @Inject constructor(private val dataSource: MovieListSou
                 dataSource.getMovieList(genre)
             },
         ).flow.map { data -> data.map { MovieListMapper.mapMovieListItemResponseToDomain(it) } }
+
+    override suspend fun getGenreList(): Flow<Result<List<Genre>>> {
+        return dataSource.getGenreList().map { result ->
+            when (result) {
+                is Result.Success -> {
+                    val genreList = (result.data.genres ?: arrayListOf()).map { response ->
+                        GenreMapper.toDomain(response)
+                    }
+                    Result.Success(genreList)
+                }
+
+                is Result.Error -> Result.Error(result.message, result.code)
+                is Result.Idle -> Result.Idle
+                is Result.Loading -> Result.Loading
+            }
+        }
+    }
 }

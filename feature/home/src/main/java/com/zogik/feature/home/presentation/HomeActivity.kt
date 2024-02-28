@@ -38,6 +38,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -49,11 +50,15 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.zogik.designsystem.theme.MovieTheme
 import com.zogik.designsystem.theme.Purple80
-import com.zogik.feature.home.data.dummyGenres
+import com.zogik.network.Result
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeActivity : ComponentActivity() {
+    @Inject
+    lateinit var navigation: HomeAction
+
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,12 +80,7 @@ class HomeActivity : ComponentActivity() {
                                         Icons.Filled.Favorite,
                                         contentDescription = "Favorite",
                                         modifier = Modifier.clickable {
-//                                            startActivity(
-//                                                Intent(
-//                                                    this@HomeActivity,
-//                                                    FavoriteActivity::class.java,
-//                                                ),
-//                                            )
+                                            navigation.navigateToFavorite(this@HomeActivity)
                                         },
                                     )
                                 },
@@ -90,7 +90,7 @@ class HomeActivity : ComponentActivity() {
                         floatingActionButton = {
                             ExtendedFloatingActionButton(
                                 onClick = {
-//                                    startActivity(Intent(this, SearchActivity::class.java))
+                                    navigation.navigateToSearch(this)
                                 },
                             ) {
                                 Icon(Icons.Filled.Search, contentDescription = "Search")
@@ -117,34 +117,43 @@ class HomeActivity : ComponentActivity() {
 fun HomeScreen(modifier: Modifier, padding: PaddingValues, onlick: (String) -> Unit) {
     val viewModel = hiltViewModel<HomeViewModel>()
     val itemList = viewModel.getMovieList().collectAsLazyPagingItems()
+    val genreList = viewModel.genreList.collectAsState(Result.Loading).value
 
     Column(Modifier.padding(padding)) {
-        LazyRow {
-            items(items = dummyGenres) {
-                Box(
-                    Modifier.height(50.dp)
-                        .wrapContentHeight(align = Alignment.CenterVertically)
-                        .wrapContentWidth().padding(horizontal = 6.dp)
-                        .background(
-                            color = if (it.selected) MaterialTheme.colorScheme.primary else Color.White,
-                            shape = RoundedCornerShape(12.dp),
-                        )
-                        .border(
-                            width = 1.dp,
-                            color = Color.Black,
-                            shape = RoundedCornerShape(12.dp),
-                        )
-                        .clickable {
-                            viewModel.setGenre(it)
-                        },
-                ) {
-                    Text(
-                        modifier = Modifier.padding(8.dp),
-                        color = if (it.selected) Color.White else Color.Black,
-                        text = it.name,
-                    )
+        when (genreList) {
+            is Result.Loading -> CircularProgressIndicator(color = Color.Black)
+            is Result.Success -> {
+                LazyRow {
+                    items(items = genreList.data) {
+                        Box(
+                            Modifier.height(50.dp)
+                                .wrapContentHeight(align = Alignment.CenterVertically)
+                                .wrapContentWidth().padding(horizontal = 6.dp)
+                                .background(
+                                    color = if (it.isSelected) MaterialTheme.colorScheme.primary else Color.White,
+                                    shape = RoundedCornerShape(12.dp),
+                                )
+                                .border(
+                                    width = 1.dp,
+                                    color = Color.Black,
+                                    shape = RoundedCornerShape(12.dp),
+                                )
+                                .clickable {
+                                    viewModel.setGenre(genreList.data, it)
+                                },
+                        ) {
+                            Text(
+                                modifier = Modifier.padding(8.dp),
+                                color = if (it.isSelected) Color.White else Color.Black,
+                                text = it.name,
+                            )
+                        }
+                    }
                 }
             }
+
+            is Result.Error -> {}
+            is Result.Idle -> {}
         }
 
         LazyColumn(modifier = Modifier.padding(top = 12.dp)) {

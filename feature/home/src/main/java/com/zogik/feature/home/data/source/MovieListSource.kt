@@ -1,7 +1,10 @@
 package com.zogik.feature.home.data.source
 
 import androidx.paging.PagingSource
+import com.zogik.model.genre.GenreResponse
 import com.zogik.model.movielist.MovieListItemResponse
+import com.zogik.network.Result
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Created by : Prayogi Sholihul
@@ -10,4 +13,5 @@ import com.zogik.model.movielist.MovieListItemResponse
  **/
 interface MovieListSource {
     fun getMovieList(genre: String): PagingSource<Int, MovieListItemResponse>
+    suspend fun getGenreList(): Flow<Result<GenreResponse>>
 }
