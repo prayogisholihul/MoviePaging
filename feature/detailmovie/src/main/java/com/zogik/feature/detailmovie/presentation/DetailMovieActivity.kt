@@ -250,7 +250,13 @@ fun ReviewView(reviewItem: LazyPagingItems<MovieReview>) {
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         Text(text = item?.author.orEmpty())
-                        StarRatingBar(rating = (item?.authorDetails?.rating ?: 0.0).toFloat())
+                        if (item?.authorDetails?.ratingOutOf5 == null) {
+                            Text("No Rating Found")
+                        } else {
+                            StarRatingBar(
+                                rating = (item.authorDetails?.ratingOutOf5 ?: 0).toFloat(),
+                            )
+                        }
                     }
                     Spacer(Modifier.height(6.dp))
                     Divider()
@@ -330,7 +336,7 @@ fun StarRatingBar(
         for (i in 1..maxStars) {
             val isSelected = i <= rating
             val icon = if (isSelected) Icons.Filled.Star else Icons.Default.Star
-            val iconTintColor = if (isSelected) Color(0xFFFFC700) else Color(0x20FFFFFF)
+            val iconTintColor = if (isSelected) Color(0xFFFFC700) else Color.White
             Icon(
                 imageVector = icon,
                 contentDescription = null,

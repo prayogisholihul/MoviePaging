@@ -12,12 +12,14 @@ data class MovieReview(
     val createdAt: String?,
     val id: String?,
     val content: String?,
-    val url: String?
+    val url: String?,
 )
 
 data class AuthorDetails(
     val avatarPath: Any?,
     val name: String?,
     val rating: Double?,
-    val username: String?
-)
+    val username: String?,
+) {
+    val ratingOutOf5 = (rating?.div(10))?.times(5)
+}
