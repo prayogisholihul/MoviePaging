@@ -126,7 +126,7 @@ fun SearchScreen(modifier: Modifier = Modifier, onlick: (String) -> Unit) {
                 else -> {}
             }
 
-            when (val state = searchList.loadState.append) { // Pagination
+            when (searchList.loadState.append) { // Pagination
                 is LoadState.Error -> {
                     // state.error to get error message
                 }

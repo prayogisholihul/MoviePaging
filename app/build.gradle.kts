@@ -54,7 +54,7 @@ android {
 
 dependencies {
     api(project(":core:source"))
-    api(project(":core:response"))
+    api(project(":core:model"))
     api(project(":core:entity"))
     implementation(project(":feature"))
 

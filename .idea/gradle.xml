@@ -14,7 +14,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/core/entity" />
-            <option value="$PROJECT_DIR$/core/response" />
+            <option value="$PROJECT_DIR$/core/model" />
             <option value="$PROJECT_DIR$/core/source" />
             <option value="$PROJECT_DIR$/feature" />
           </set>

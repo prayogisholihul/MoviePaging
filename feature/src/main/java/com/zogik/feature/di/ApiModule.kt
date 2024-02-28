@@ -1,6 +1,6 @@
 package com.zogik.feature.di
 
-import com.zogik.feature.data.ApiClient
+import com.zogik.feature.data.source.ApiClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

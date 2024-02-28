@@ -4,8 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,7 +17,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Search
@@ -40,6 +48,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import com.zogik.feature.data.dummyGenres
 import com.zogik.feature.presentation.ui.theme.MovieTheme
 import com.zogik.feature.presentation.ui.theme.Purple80
 import dagger.hilt.android.AndroidEntryPoint
@@ -108,69 +117,108 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun HomeScreen(modifier: Modifier, padding: PaddingValues, onlick: (String) -> Unit) {
     val viewModel = hiltViewModel<MainViewModel>()
-    val itemList = viewModel.getNowPlaying().collectAsLazyPagingItems()
+    val itemList = viewModel.getMovieList().collectAsLazyPagingItems()
 
-    LazyColumn(modifier, contentPadding = padding) {
-        items(items = itemList) { item ->
-            Text(
-                modifier = Modifier
-                    .height(75.dp).fillMaxWidth().clickable {
-                        onlick.invoke(item?.id.toString())
-                    },
-                color = Color.Black,
-                text = item?.title.orEmpty(),
-            )
-            Divider()
-        }
-
-        when (val state = itemList.loadState.refresh) { // FIRST LOAD
-            is LoadState.Error -> {
-                // state.error to get error message
-            }
-
-            is LoadState.Loading -> { // Loading UI
-                item {
-                    Column(
-                        modifier = Modifier
-                            .fillParentMaxSize(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center,
-                    ) {
-                        Text(
-                            modifier = Modifier
-                                .padding(8.dp),
-                            text = "Refresh Loading",
+    Column(Modifier.padding(padding)) {
+        LazyRow {
+            items(items = dummyGenres) {
+                Box(
+                    Modifier.height(50.dp)
+                        .wrapContentHeight(align = Alignment.CenterVertically)
+                        .wrapContentWidth().padding(horizontal = 6.dp)
+                        .background(
+                            color = if (it.selected) MaterialTheme.colorScheme.primary else Color.White,
+                            shape = RoundedCornerShape(12.dp),
                         )
-
-                        CircularProgressIndicator(color = Color.Black)
-                    }
+                        .border(
+                            width = 1.dp,
+                            color = Color.Black,
+                            shape = RoundedCornerShape(12.dp),
+                        )
+                        .clickable {
+                            viewModel.setGenre(it)
+                        },
+                ) {
+                    Text(
+                        modifier = Modifier.padding(8.dp),
+                        color = if (it.selected) Color.White else Color.Black,
+                        text = it.name,
+                    )
                 }
             }
-
-            else -> {}
         }
 
-        when (val state = itemList.loadState.append) { // Pagination
-            is LoadState.Error -> {
-                // state.error to get error message
+        LazyColumn(modifier = Modifier.padding(top = 12.dp)) {
+            items(items = itemList) { item ->
+                Text(
+                    modifier = Modifier
+                        .height(75.dp).fillMaxWidth().clickable {
+                            onlick.invoke(item?.id.toString())
+                        },
+                    color = Color.Black,
+                    text = item?.title.orEmpty(),
+                )
+                Divider()
             }
 
-            is LoadState.Loading -> { // Pagination Loading UI
-                item {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center,
-                    ) {
-                        Text(text = "Pagination Loading")
-
-                        CircularProgressIndicator(color = Color.Black)
+            when (val state = itemList.loadState.refresh) { // FIRST LOAD
+                is LoadState.Error -> {
+                    item {
+                        Column(
+                            modifier = Modifier
+                                .fillParentMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                        ) {
+                            Text("Error Load")
+                        }
                     }
                 }
+
+                is LoadState.Loading -> { // Loading UI
+                    item {
+                        Column(
+                            modifier = Modifier
+                                .fillParentMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                        ) {
+                            Text(
+                                modifier = Modifier
+                                    .padding(8.dp),
+                                text = "Refresh Loading",
+                            )
+
+                            CircularProgressIndicator(color = Color.Black)
+                        }
+                    }
+                }
+
+                else -> {}
             }
 
-            else -> {}
+            when (val state = itemList.loadState.append) { // Pagination
+                is LoadState.Error -> {
+                    // state.error to get error message
+                }
+
+                is LoadState.Loading -> { // Pagination Loading UI
+                    item {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                        ) {
+                            Text(text = "Pagination Loading")
+
+                            CircularProgressIndicator(color = Color.Black)
+                        }
+                    }
+                }
+
+                else -> {}
+            }
         }
     }
 }

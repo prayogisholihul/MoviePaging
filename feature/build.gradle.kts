@@ -39,6 +39,11 @@ android {
     buildFeatures {
         compose = true
     }
+
+    viewBinding {
+        enable = true
+    }
+
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
     }
@@ -50,7 +55,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:response"))
+    implementation(project(":core:model"))
     implementation(project(":core:entity"))
     implementation(project(":core:source"))
 
@@ -75,6 +80,9 @@ dependencies {
     implementation(libs.viewmodel)
     implementation(libs.livedata)
     implementation(libs.viewmodel.compose)
+    implementation(libs.youtubeview)
+    implementation(libs.androidx.viewbinding)
+    implementation(libs.compose.viewbinding)
 
     implementation(libs.retrofit)
     implementation(libs.glide)

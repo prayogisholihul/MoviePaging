@@ -3,7 +3,6 @@ package com.zogik.feature.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,9 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -39,19 +36,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidViewBinding
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideSubcomposition
-import com.bumptech.glide.integration.compose.RequestState
+import androidx.lifecycle.Lifecycle
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.zogik.entity.MovieFavorite
+import com.zogik.feature.databinding.YoutubeViewBinding
 import com.zogik.feature.presentation.ui.theme.MovieTheme
 import com.zogik.feature.presentation.ui.theme.Purple80
-import com.zogik.network.Constant
 import com.zogik.network.Result
-import com.zogik.response.MovieDetail
+import com.zogik.model.MovieDetail
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -121,6 +119,7 @@ class DetailMovieActivity : ComponentActivity() {
                                 viewModel,
                                 innerPadding,
                                 movieId.orEmpty(),
+                                lifecycle,
                             )
                         },
                     )
@@ -131,22 +130,25 @@ class DetailMovieActivity : ComponentActivity() {
 }
 
 @Composable
-fun DetailScreen(viewModel: MainViewModel, padding: PaddingValues, movieId: String) {
+fun DetailScreen(
+    viewModel: MainViewModel,
+    padding: PaddingValues,
+    movieId: String,
+    lifecycle: Lifecycle,
+) {
     viewModel.getDetail(movieId)
 
-    val state = viewModel.getDetail.collectAsState().value
-    when (state) {
+    when (val state = viewModel.getDetail.collectAsState().value) {
         is Result.Error -> {}
-        is Result.Loading -> {
-            if (state.loadingState) Loading()
-        }
-
+        is Result.Loading -> Loading()
         is Result.Success -> {
             viewModel.favoriteDataPass.value =
                 MovieFavorite(state.data.id ?: 0, state.data.title.orEmpty())
 
-            Content(state.data, padding)
+            Content(state.data, padding, lifecycle)
         }
+
+        else -> {}
     }
 }
 
@@ -164,29 +166,26 @@ fun Loading() {
     }
 }
 
-@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun Content(data: MovieDetail, padding: PaddingValues) {
+fun Content(data: MovieDetail, padding: PaddingValues, lifecycle: Lifecycle) {
     Column(Modifier.verticalScroll(rememberScrollState()).padding(padding)) {
-        GlideSubcomposition(
-            Constant.imageURL + data.posterPath,
-            Modifier.fillMaxWidth().height(550.dp),
-        ) {
-            when (state) {
-                RequestState.Failure -> {
-                    Text("Error Load Picture")
-                }
+        AndroidViewBinding(YoutubeViewBinding::inflate) {
+            this.youtubePlayerView.apply {
+                lifecycle.addObserver(this)
+                addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+                    override fun onReady(youTubePlayer: YouTubePlayer) {
+                        super.onReady(youTubePlayer)
+                        youTubePlayer.loadVideo("otNh9bTjXWg", 0F)
+                    }
 
-                RequestState.Loading -> {
-                    Loading()
-                }
-
-                is RequestState.Success -> Image(
-                    painter = painter,
-                    modifier = Modifier.wrapContentHeight().fillMaxWidth(),
-                    contentScale = ContentScale.Crop,
-                    contentDescription = null,
-                )
+                    override fun onError(
+                        youTubePlayer: YouTubePlayer,
+                        error: PlayerConstants.PlayerError,
+                    ) {
+                        super.onError(youTubePlayer, error)
+                        Text("Video Error")
+                    }
+                })
             }
         }
         Spacer(Modifier.padding(top = 12.dp))

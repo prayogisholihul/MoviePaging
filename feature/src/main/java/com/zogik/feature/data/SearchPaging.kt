@@ -3,7 +3,8 @@ package com.zogik.feature.data
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.zogik.response.SearchItem
+import com.zogik.feature.data.source.ApiClient
+import com.zogik.model.SearchItem
 
 class SearchPaging(private val api: ApiClient, private val query: String) :
     PagingSource<Int, SearchItem>() {
